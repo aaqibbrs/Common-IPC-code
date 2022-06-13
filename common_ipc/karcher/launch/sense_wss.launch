@@ -1,0 +1,107 @@
+<launch>
+
+    <node name="brs_debug_status" pkg="karcher" type="brs_debug_status" output="screen"/>
+    <node name="brs_dt" pkg="karcher" type="brs_dt" output="screen"/>
+    <node name="brs_checking" pkg="karcher" type="brs_checking"/>
+    <node name="brs_node_check" pkg="karcher" type="brs_node_check"/>
+    <node name="brs_vis_both" pkg="karcher" type="brs_vis_both"/>
+    <node name="brs_curret" pkg="karcher" type="brs_current"/>
+
+    <node name="brs_current" pkg="karcher" type="brs_current"/>
+ 
+    <node name="brs_sense" pkg="karcher" type="brs_sense" output="screen" />
+
+	<node name="brs_left_wall" pkg="karcher" type="brs_left_wall" output="screen"/>
+
+    <node name="brs_right_wall" pkg="karcher" type="brs_right_wall" output="screen"/>
+
+   <node name="brs_left_step" pkg="karcher" type="brs_left_step" output="screen"/>
+    <node name="brs_right_step" pkg="karcher" type="brs_right_step" output="screen"/>
+
+    <node name="brs_pose_data" pkg="karcher" type="brs_pose_data" />
+	
+    <node name="brs_pose_str" pkg="karcher" type="brs_pose_str" />
+
+    <remap from="/raw_imu" to="imu_data"/>
+    <node name="imu_brick_node" pkg="brick_imu_v2" type="imu_brick_node" />
+
+    <node name="brs_teleop_wss" pkg="karcher" type="brs_teleop_wss" output="screen"/>
+    <node name="wss_client" pkg="wspp" type="wss_client" output="screen"/>
+    <node pkg="rosserial_python" type="serial_node.py" name="serial_node">
+    <param name="port" value="/dev/ttyACM0"/>
+    <param name="baud" value="57600"/>
+  	</node>
+
+    <node name="inc_rplidarNode"          pkg="inclined_lidar"  type="inc_rplidarNode">
+	<param name="serial_port"         type="string" value="/dev/ttyUSB0"/>
+	<param name="serial_baudrate"     type="int"    value="115200"/>
+	<param name="frame_id"            type="string" value="laser"/>
+	<param name="inverted"            type="bool"   value="false"/>
+	<param name="angle_compensate"    type="bool"   value="true"/>
+    </node>
+
+    <node name="rplidar_node" pkg="rplidar_ros" type="rplidarNode">
+        <param name="serial_port" type="string" value="/dev/ttyUSB1"/>
+        <param name="serial_baudrate" type="int" value="115200"/>
+        <param name="frame_id" type="string" value="laser"/>
+        <param name="inverted" type="bool" value="false"/>
+        <param name="angle_compensate" type="bool" value="true"/>
+    </node>
+
+	<!-- param name="PWM_L" value="0.12" type="double" / -->
+	<!-- param name="PWM_R" value="0.53" type="double" / -->
+
+	<param name="SET_DISTANCE" value="30.0" type="double" />
+	<param name="LEFT_SET" value="0.25" type="double" />
+	<param name="RIGHT_SET" value="0.25" type="double" />
+	<!-- param name="TURN_TYPE" value="1" type="int" / -->
+	
+	<node name="Position_control" pkg="karcher" type="Position_control" />
+	<node name="Heading_control" pkg="karcher" type="Heading_control" />
+	<!-- node name="Turn_control" pkg="karcher" type="Turn_control" / -->
+	<node name="Distance_control" pkg="karcher" type="Distance_control" />
+	<node name="Navigation_ZZ" pkg="karcher" type="Navigation_ZZ" />
+
+    <param name="/lidar_height"     value="0.65"/><!--Slant lidar, it is set now acc. to mech. drawing-->
+    <param name="/safe"             value="2.0"/> <!--do not change-->
+    <param name="/turn_dist"        value="800"/> <!--do not change-->
+    <param name="/presence_step"    value="10"/><!--do not change-->
+    <param name="/presence_wall"    value="1"/><!--do not change-->
+    <param name="/sw_param"         value="1.0"/>
+
+    <param name="/obstacle_avoidance"     value="0"/><!-- default is enabled (Only step following)-->
+    <param name="/allow_shortwall "     value="0"/><!-- default is disabled (only wall following)-->
+
+    <param name="/ws_setpoint"      value="0.65"/>
+    <param name="/ss_enable"        value="0"/> <!--0 is enabled, 1 will be disabled (sensing stopping)-->
+
+    <!--for tuning -->
+    <param name="/tuning"           value="1"/> 
+    <param name="/KP"               value="0.3"/> <!--decrease if wobbling is more (do not increase)-->
+    <param name="/KI"               value="0.0"/> <!--do not change-->
+    <param name="/KD"               value="0.15"/> <!--increase to improve alignment-->
+
+    <param name="/new_stop_flat"      value="1"/>
+    <param name="/new_stop_slant"     value="1"/>
+    <param name="/stop_dist_flat_strt"     value="1.0"/> <!--/scan topic lidar sensing distance-->    
+    <param name="/stop_dist_flat_left"    value="0.6"/>
+    <param name="/stop_dist_flat_right"   value="0.6"/>
+    <param name="/stop_dist_slant_strt"    value=".95"/> <!--/new_scan_far topic lidar sensing distance-->
+    <param name="/stop_dist_slant_left"    value="0.85"/>
+    <param name="/stop_dist_slant_right"   value="0.85"/>
+
+    <param name="/left_enc_ppr"     value="500"/> <!--left encoder ppr (400 or 500)-->
+    <param name="/right_enc_ppr"    value="500"/> <!--right encoder ppr (400 or 500)-->
+
+    <param name="/p_to_p"    value="0"/> <!-- default Pole to pole set at 0 feet -->
+
+    <param name="KP_X"          value="5"/>
+    <param name="KD_X"          value="2"/>
+    <param name="KP_D"          value="5"/>
+    <param name="KD_D"          value="2"/>
+
+    <param name="/lidar_left_end"    value="0.35"/>
+    <param name="/lidar_right_end"    value="0.35"/>
+
+    <param name="/RID"    value="5fbb48e4a067fd10a5f3ec08"/><!--siemens kalwa-->
+</launch>

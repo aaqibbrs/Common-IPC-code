@@ -1,0 +1,76 @@
+<launch>
+    <node name="lidar" pkg="karcher" type="lidar.py"  output="screen"/>
+
+    <node name="brs_check_lidar" pkg="karcher" type="brs_check_lidar" output="screen"/>
+
+    <node name="brs_debug_status" pkg="karcher" type="brs_debug_status" output="screen"/>
+    <node name="brs_current" pkg="karcher" type="brs_current"/>
+    <node name="brs_dt" pkg="karcher" type="brs_dt" output="screen"/>
+    <node name="brs_checking" pkg="karcher" type="brs_checking"/>
+    <node name="brs_node_check" pkg="karcher" type="brs_node_check"/>
+    <node name="brs_sense" pkg="karcher" type="brs_sense" output="screen" />
+
+	<node name="brs_left_wall" pkg="karcher" type="brs_left_wall" output="screen"/>
+
+    <node name="brs_right_wall" pkg="karcher" type="brs_right_wall" output="screen"/>
+
+   <node name="brs_left_step" pkg="karcher" type="brs_left_step" output="screen"/>
+    <node name="brs_right_step" pkg="karcher" type="brs_right_step" output="screen"/>
+
+    <node name="brs_pose_data" pkg="karcher" type="brs_pose_data" />
+	
+    <node name="brs_pose_str" pkg="karcher" type="brs_pose_str" />
+
+    <remap from="/raw_imu" to="imu_data"/>
+    <node name="imu_brick_node" pkg="brick_imu_v2" type="imu_brick_node" />
+
+    <node name="brs_teleop" pkg="karcher" type="brs_teleop" output="screen"/>
+    <node pkg="rosserial_python" type="serial_node.py" name="serial_node">
+    <param name="port" value="/dev/ttyACM0"/>
+    <param name="baud" value="57600"/>
+  	</node>
+
+	<!-- param name="PWM_L" value="0.12" type="double" / -->
+	<!-- param name="PWM_R" value="0.53" type="double" / -->
+
+    <param name="/lidar_height"     value="0.65"/><!--Slant lidar, it is set now acc. to mech. drawing-->
+    <param name="/safe"             value="2.5"/> <!--do not change-->
+    <param name="/turn_dist"        value="950"/> <!--do not change-->
+    <param name="/presence_step"    value="4"/><!--do not change-->
+    <param name="/presence_wall"    value="1"/><!--do not change-->
+    <param name="/sw_param"         value="1.0"/>
+
+    <param name="/obstacle_avoidance"     value="0"/><!-- default is enabled (Only step following)-->
+    <param name="/allow_shortwall "     value="0"/><!-- default is disabled (only wall following)-->
+
+    <param name="/ws_setpoint"      value="0.65"/>
+    <param name="/ss_enable"        value="0"/> <!--0 is enabled, 1 will be disabled (sensing stopping)-->
+
+    <!--for tuning -->
+    <param name="/tuning"           value="1"/> 
+    <param name="/KP"               value="0.3"/> <!--decrease if wobbling is more (do not increase)-->
+    <param name="/KI"               value="0.0"/> <!--do not change-->
+    <param name="/KD"               value="0.15"/> <!--increase to improve alignment-->
+
+    <param name="/new_stop_flat"      value="1"/>
+    <param name="/new_stop_slant"     value="1"/>
+    <param name="/stop_dist_flat"     value="0.80"/> <!--/scan topic lidar sensing distance-->
+    <param name="/stop_dist_slant"    value="0.80"/> <!--/new_scan_far topic lidar sensing distance-->
+
+    <param name="/left_enc_ppr"     value="500"/> <!--left encoder ppr (400 or 500)-->
+    <param name="/right_enc_ppr"    value="500"/> <!--right encoder ppr (400 or 500)-->
+
+    <param name="/p_to_p"    value="0"/> <!-- default Pole to pole set at 0 feet -->
+
+    <param name="KP_X"          value="5"/>
+    <param name="KD_X"          value="2"/>
+    <param name="KP_D"          value="5"/>
+    <param name="KD_D"          value="2"/>
+
+    <param name="/lidar_left_end"    value="0.35"/>
+    <param name="/lidar_right_end"    value="0.35"/>
+
+    <param name="/location" value="/home/bros/linorobot_ws/src/common_ipc/karcher/launch/lidar0.launch"/>
+    <param name="/location1" value="/home/bros/linorobot_ws/src/common_ipc/karcher/launch/lidar1.launch"/>
+
+</launch>

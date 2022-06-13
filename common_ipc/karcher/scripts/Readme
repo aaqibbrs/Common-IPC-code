@@ -1,0 +1,8 @@
+1. 18_ipc_firmware_DS_CL.hex
+    RPM based control
+    Current Limit (combined) = 18A
+    Dead Switch = 10sec
+
+2. pwm_10s_dead_switch.hex
+    PWM based control
+    Dead Switch = 10sec

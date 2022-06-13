@@ -1,0 +1,25 @@
+<launch>
+	<!-- param name="PWM_L" value="0.12" type="double" / -->
+	<!-- param name="PWM_R" value="0.53" type="double" / -->
+
+	<param name="SET_DISTANCE" value="1.3" type="double" />
+	<param name="LEFT_SET" value="0.12" type="double" />
+	<param name="RIGHT_SET" value="0.12" type="double" />
+	<!-- param name="TURN_TYPE" value="1" type="int" / -->
+	 
+	<node name="imu_brick_node" pkg="brick_imu_v2" type="imu_brick_node" />
+	<node name="karcher_teleop_termios" pkg="karcher" type="karcher_teleop_termios" />
+    
+	<!-- node name="karcher_teleop_com_def" pkg="karcher" type="karcher_teleop_com_def" / -->
+
+	<node pkg="rosserial_python" type="serial_node.py" name="serial_node" output="screen">
+	<param name="port" value="/dev/ttyACM0"/>
+	<param name="baud" value="57600"/>
+	</node>
+	
+	<!-- node name="Speed_control" pkg="karcher" type="Speed_control" / -->
+	<- node name="Heading_control" pkg="karcher" type="Heading_control" / -->
+	<!-- node name="Turn_control" pkg="karcher" type="Turn_control" / -->
+	<node name="Distance_control" pkg="karcher" type="Distance_control" />
+	<node name="Navigation_ZZ" pkg="karcher" type="Navigation_ZZ" />
+</launch>

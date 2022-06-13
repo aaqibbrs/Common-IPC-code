@@ -1,0 +1,4 @@
+<launch>
+	<node name="karcher_teleop_ws" pkg="wspp" type="karcher_teleop_ws" />
+	<node name="ws_client_recon" pkg="wspp" type="ws_client_recon" />
+</launch>

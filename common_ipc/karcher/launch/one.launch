@@ -1,0 +1,10 @@
+<launch>
+
+<include file="$(find karcher)/launch/NAV.launch">
+    </include>
+
+
+<include file="$(find linorobot)/launch/one.launch">
+    </include>
+
+</launch>
